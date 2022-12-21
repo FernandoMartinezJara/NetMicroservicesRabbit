@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Interfaces\" />
+    <None Remove="Models\" />
+    <None Remove="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroservicesRabbit.Transfer.Domain\MicroservicesRabbit.Transfer.Domain.csproj" />
+    <ProjectReference Include="..\MicroservicesRabbit.Domain.Core\MicroservicesRabbit.Domain.Core.csproj" />
+    <ProjectReference Include="..\MicroservicesRabbit.Transfer.Data\MicroservicesRabbit.Transfer.Data.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Models\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Commands\" />
+    <None Remove="ComandHandlers\" />
+    <None Remove="EventHandlers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Commands\" />
+    <Folder Include="ComandHandlers\" />
+    <Folder Include="EventHandlers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroservicesRabbit.Domain.Core\MicroservicesRabbit.Domain.Core.csproj" />
+  </ItemGroup>
+</Project>
