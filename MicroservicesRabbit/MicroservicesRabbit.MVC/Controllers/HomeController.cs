@@ -37,7 +37,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Transfer(TransferViewModel model)
     {
-        TransferDto transferDto = new TransferDto()
+        TransferDto transferDto = new()
         {
             FromAccount = model.FromAccount,
             ToAccount = model.ToAccount,

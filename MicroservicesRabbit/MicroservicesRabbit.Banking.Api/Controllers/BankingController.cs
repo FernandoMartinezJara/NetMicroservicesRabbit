@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MicroservicesRabbit.Banking.Application.Interfaces;
+﻿using MicroservicesRabbit.Banking.Application.Interfaces;
 using MicroservicesRabbit.Banking.Application.Models;
 using MicroservicesRabbit.Banking.Domain.Models;
 using Microsoft.AspNetCore.Mvc;

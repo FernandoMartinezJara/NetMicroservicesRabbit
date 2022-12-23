@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  Banking:
+    image: banking
+    container_name: banking
+    build:
+      context: .
+      dockerfile: DockerfileBanking
+    ports:
+        - 5001:80
+    networks:
+      - my-network
+    environment:
+      - RABBIT_HOSTNAME=host.docker.internal
+      - BANKING_DB_CONNECTION=Server=host.docker.internal;Database=BankingDb;User Id=sa;Password=Inicio01.;TrustServerCertificate=true 
+  Transfer:
+    image: transfer
+    container_name: tranfer
+    build:
+      context: .
+      dockerfile: DockerfileTransfer
+    ports:
+        - 5002:80
+    networks:
+      - my-network
+    environment:
+      - RABBIT_HOSTNAME=host.docker.internal
+      - TRANSFER_DB_CONNECTION=Server=host.docker.internal;Database=TransferDb;User Id=sa;Password=Inicio01.;TrustServerCertificate=true 
+  WebSite:
+    image: mvc
+    container_name: mvc
+    build:
+      context: .
+      dockerfile: ./MicroservicesRabbit.MVC/Dockerfile
+    ports:
+        - 5003:80
+    networks:
+      - my-network
+    environment:
+      - API_URL=http://Banking:5001/Banking
+networks:
+  my-network:
+    external: true

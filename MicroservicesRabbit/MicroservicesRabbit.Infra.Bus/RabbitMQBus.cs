@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using RabbitMQ.Client.Events;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace MicroservicesRabbit.Infra.Bus
 {
@@ -16,16 +17,18 @@ namespace MicroservicesRabbit.Infra.Bus
         private readonly Dictionary<string, List<Type>> _handlers;
         private readonly List<Type> _eventTypes;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IConfiguration _configuration;
 
-
-        public RabbitMQBus(IMediator mediator
-            , IServiceScopeFactory serviceScopeFactory
+        public RabbitMQBus(IMediator mediator,
+            IServiceScopeFactory serviceScopeFactory,
+            IConfiguration configuration
             )
         {
             _mediator = mediator;
             _handlers = new Dictionary<string, List<Type>>();
             _eventTypes = new List<Type>();
             _serviceScopeFactory = serviceScopeFactory;
+            _configuration = configuration;
         }
 
         public Task SendCommand<T>(T command) where T : Command
@@ -35,7 +38,12 @@ namespace MicroservicesRabbit.Infra.Bus
 
         public void Publish<T>(T @event) where T : Event
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory()
+            {
+                HostName = _configuration["RABBIT_HOSTNAME"],
+                UserName = "guest",
+                Password = "guest"
+            };
 
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
@@ -78,7 +86,13 @@ namespace MicroservicesRabbit.Infra.Bus
 
         private void StartBasicConsume<T>() where T : Event
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", DispatchConsumersAsync = true };
+            var factory = new ConnectionFactory()
+            {
+                HostName = _configuration["RABBIT_HOSTNAME"],
+                UserName = "guest",
+                Password = "guest",
+                DispatchConsumersAsync = true
+            };
             var connection = factory.CreateConnection();
             var channel = connection.CreateModel();
             var eventName = typeof(T).Name;

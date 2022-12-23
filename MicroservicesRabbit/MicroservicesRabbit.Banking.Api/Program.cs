@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<BankingDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BankingDbConnection"));
+    options.UseSqlServer(builder.Configuration["BANKING_DB_CONNECTION"]);
 });
 
 builder.Services.AddMediatR(typeof(Program));
@@ -28,14 +28,14 @@ RegisterServices(builder.Services);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Banking Microservice V1");
     });
-}
+//}
 
 app.UseHttpsRedirection();
 

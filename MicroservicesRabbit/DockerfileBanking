@@ -1,0 +1,27 @@
+﻿
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+
+WORKDIR /App
+
+#COPY ./MicroservicesRabbit.Infra.IoC/MicroservicesRabbit.Infra.IoC.csproj ./
+#RUN dotnet restore
+
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore ./MicroservicesRabbit.Banking.Api/MicroservicesRabbit.Banking.Api.csproj
+
+# Build and publish a release
+RUN dotnet publish ./MicroservicesRabbit.Banking.Api/MicroservicesRabbit.Banking.Api.csproj -c Release -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /App
+COPY --from=build-env /App/out .
+
+# expose port used by api
+EXPOSE 5001
+#ENV ASPNETCORE_URLS=http://+:5001
+
+ENTRYPOINT ["dotnet", "MicroservicesRabbit.Banking.Api.dll", "--urls", "http://*:5001"]

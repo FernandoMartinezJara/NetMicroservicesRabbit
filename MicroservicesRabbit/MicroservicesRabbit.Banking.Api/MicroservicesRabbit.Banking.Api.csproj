@@ -33,5 +33,11 @@
     <ProjectReference Include="..\MicroservicesRabbit.Infra.IoC\MicroservicesRabbit.Infra.IoC.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\MicroservicesRabbit.Banking.Application\MicroservicesRabbit.Banking.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\MicroservicesRabbit.Banking.Domain\MicroservicesRabbit.Banking.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

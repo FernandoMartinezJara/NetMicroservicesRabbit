@@ -20,26 +20,26 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<TransferDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TransferDbConnection"));
+    options.UseSqlServer(builder.Configuration["TRANSFER_DB_CONNECTION"]);
 });
 
 builder.Services.AddMediatR(typeof(Program));
 
 
-RegisterServices(builder.Services);
+RegisterServices(builder.Services, builder.Configuration);
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transfer Microservice V1");
     });
-}
+//}
 
 app.UseHttpsRedirection();
 
@@ -49,15 +49,13 @@ app.MapControllers();
 ConfigureEventBus(app);
 app.Run();
 
-
-
 static void ConfigureEventBus(WebApplication app)
 {
    var eventBus = app.Services.GetRequiredService<IEventBus>();
     eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
 }
 
-static void RegisterServices(IServiceCollection services)
+static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 {
-    TransferDependencyContainer.RegisterServices(services);
+    TransferDependencyContainer.RegisterServices(services, configuration);
 }

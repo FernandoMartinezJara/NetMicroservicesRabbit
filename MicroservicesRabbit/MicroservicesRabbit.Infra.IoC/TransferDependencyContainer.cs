@@ -11,12 +11,13 @@ using MicroservicesRabbit.Transfer.Domain.Events;
 using MicroservicesRabbit.Transfer.Domain.EventHandlers;
 using MicroservicesRabbit.Banking.Domain.ComandHandlers;
 using MicroservicesRabbit.Banking.Domain.Commands;
+using Microsoft.Extensions.Configuration;
 
 namespace MicroservicesRabbit.Infra.IoC
 {
     public class TransferDependencyContainer
     {
-		public static void RegisterServices(IServiceCollection services)
+		public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 		{
             //Domain Bus
 
@@ -25,7 +26,7 @@ namespace MicroservicesRabbit.Infra.IoC
             services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
             {
                 var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-                return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+                return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory, configuration);
             });
 
             services.AddTransient<TransferEventHandler>();
